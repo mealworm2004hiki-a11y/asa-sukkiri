@@ -1,0 +1,14 @@
+{
+  "name": "朝スッキリ｜すっきり起きる睡眠アプリ",
+  "short_name": "朝スッキリ",
+  "description": "浅い眠りをねらって、やさしく起こす睡眠アラーム。就寝・起床時刻の逆算と記録も。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0e20",
+  "theme_color": "#0c0e20",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
