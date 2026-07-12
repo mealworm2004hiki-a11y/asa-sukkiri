@@ -1,0 +1,751 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0c0e20" id="metaTheme">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>朝スッキリ｜すっきり起きる睡眠アプリ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Shippori+Mincho:wght@500;600;700&family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ============ THEMES（見た目）: data-theme で切替 ============ */
+  :root, [data-theme="nightsky"]{
+    --bg:radial-gradient(130% 80% at 50% -10%, #1c2158 0%, #0c0e20 55%);
+    --tc:#0c0e20;
+    --ink:#eef1ff; --sub:#8891c9; --line:#2c3468;
+    --card:linear-gradient(180deg,#1b2050,#141936); --card-border:#2c3468;
+    --card-shadow:0 10px 30px rgba(0,0,0,.25);
+    --sunk:#20264f;
+    --accent:#7c8bff; --accent2:#a78bfa;
+    --good:#5be3b3; --warn:#ffb454; --bad:#ff8f6b;
+    --toggle-off:#333a6e;
+    --ghost-bg:#20264f; --ghost-ink:#eef1ff;
+    --sel-bg:#2a316a; --sel-border:#7c8bff;
+    --danger1:#ff6b8b; --danger2:#ff8f6b;
+    --nav-bg:rgba(15,18,38,.82);
+    --wake-bg:#0c0e20; --wake-ink:#3a2412;
+    --score1:#ffffff; --score2:#c9cffb;
+    --sun1:#ffd77a; --sun2:#ff9e6d;
+    --font:'Sora',-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    --font-display:'Sora',"Hiragino Sans",sans-serif;
+    --r-card:20px; --r-btn:16px; --r-seg:12px; --r-segb:9px; --r-pill:14px; --r-note:12px; --r-input:12px; --r-mood:14px;
+  }
+  [data-theme="wood"]{
+    --bg:linear-gradient(180deg,#2b1d13,#1a120b);
+    --tc:#1a120b;
+    --ink:#f0dbb8; --sub:#b39a72; --line:#5a4326;
+    --card:linear-gradient(180deg,#3c2a18,#2a1c10); --card-border:#5a4326;
+    --card-shadow:0 10px 30px rgba(0,0,0,.25);
+    --sunk:#241a0f;
+    --accent:#c9963f; --accent2:#8a5a1f;
+    --good:#8fae5d; --warn:#d9a53f; --bad:#c0603a;
+    --toggle-off:#4a3620;
+    --ghost-bg:#241a0f; --ghost-ink:#f0dbb8;
+    --sel-bg:#3a2a14; --sel-border:#c9963f;
+    --danger1:#b3563a; --danger2:#7a3420;
+    --nav-bg:rgba(26,18,11,.85);
+    --wake-bg:#1a120b; --wake-ink:#3a2412;
+    --score1:#f3e2bf; --score2:#c9963f;
+    --sun1:#ffd77a; --sun2:#ff9e6d;
+    --font:'EB Garamond',-apple-system,"Hiragino Sans","Noto Sans JP",serif;
+    --font-display:'Cinzel',"Hiragino Sans",serif;
+    --r-card:10px; --r-btn:10px; --r-seg:8px; --r-segb:6px; --r-pill:8px; --r-note:8px; --r-input:8px; --r-mood:8px;
+  }
+  [data-theme="minimal"]{
+    --bg:#faf7f0;
+    --tc:#faf7f0;
+    --ink:#2b2823; --sub:#9c9587; --line:#ece6d8;
+    --card:#ffffff; --card-border:#ece6d8;
+    --card-shadow:0 10px 30px rgba(0,0,0,.06);
+    --sunk:#f5f1e7;
+    --accent:#e8927a; --accent2:#ffb4a2;
+    --good:#6fae8a; --warn:#e0a95c; --bad:#e88a72;
+    --toggle-off:#ece6d8;
+    --ghost-bg:#f5f1e7; --ghost-ink:#2b2823;
+    --sel-bg:#ffe8e0; --sel-border:#e8927a;
+    --danger1:#ff9a8a; --danger2:#ffb4a2;
+    --nav-bg:rgba(255,251,244,.88);
+    --wake-bg:#241c16; --wake-ink:#3a2412;
+    --score1:#2b2823; --score2:#8a7f6c;
+    --sun1:#ffd77a; --sun2:#ff9e6d;
+    --font:'Manrope',-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;
+    --font-display:'Manrope',"Hiragino Sans",sans-serif;
+    --r-card:20px; --r-btn:16px; --r-seg:12px; --r-segb:9px; --r-pill:14px; --r-note:12px; --r-input:12px; --r-mood:14px;
+  }
+  [data-theme="editorial"]{
+    --bg:#111113;
+    --tc:#111113;
+    --ink:#f2efe8; --sub:#8a8578; --line:#2a2a2c;
+    --card:#17171a; --card-border:#2a2a2c;
+    --card-shadow:0 10px 30px rgba(0,0,0,.25);
+    --sunk:#1c1c1f;
+    --accent:#c9a558; --accent2:#8f7a3f;
+    --good:#a9c17e; --warn:#d9a53f; --bad:#b07a4a;
+    --toggle-off:#2a2a2c;
+    --ghost-bg:#1c1c1f; --ghost-ink:#f2efe8;
+    --sel-bg:#2a2620; --sel-border:#c9a558;
+    --danger1:#a86a3a; --danger2:#7a5228;
+    --nav-bg:rgba(17,17,19,.85);
+    --wake-bg:#111113; --wake-ink:#3a2412;
+    --score1:#f2efe8; --score2:#c9a558;
+    --sun1:#ffd77a; --sun2:#ff9e6d;
+    --font:'Shippori Mincho',-apple-system,"Hiragino Sans","Noto Sans JP",serif;
+    --font-display:'Shippori Mincho',"Hiragino Sans",serif;
+    --r-card:3px; --r-btn:3px; --r-seg:3px; --r-segb:2px; --r-pill:3px; --r-note:3px; --r-input:3px; --r-mood:3px;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg) fixed;
+    color:var(--ink);
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) 0 calc(72px + env(safe-area-inset-bottom));
+    transition:background .3s,color .3s;
+  }
+  input[type=time]{color-scheme:dark}
+  [data-theme="minimal"] input[type=time]{color-scheme:light}
+  .wrap{max-width:520px;margin:0 auto;padding:18px 18px 0}
+  header{display:flex;align-items:center;gap:10px;margin:6px 2px 18px}
+  header .logo{font-size:26px}
+  header h1{font-size:18px;margin:0;letter-spacing:.02em}
+  header .sub{font-size:12px;color:var(--sub);margin-top:2px}
+
+  .card{background:var(--card);border:1px solid var(--card-border);
+    border-radius:var(--r-card);padding:18px;margin-bottom:16px;box-shadow:var(--card-shadow)}
+  .card h2{font-size:14px;color:var(--sub);margin:0 0 12px;font-weight:600;letter-spacing:.03em}
+
+  /* alarm main */
+  .clock-edit{width:100%;text-align:center;font-size:64px;font-weight:700;background:transparent;
+    border:0;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.02em;font-family:var(--font-display)}
+  .center{text-align:center}
+  .countdown{color:var(--sub);font-size:13px;text-align:center;margin-top:6px;min-height:18px}
+
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:0}
+  .row .lab{font-size:14px}
+  .row .desc{font-size:11px;color:var(--sub);margin-top:2px;max-width:230px}
+
+  /* toggle */
+  .sw{width:52px;height:30px;border-radius:30px;background:var(--toggle-off);position:relative;flex:0 0 auto;
+    transition:background .2s;cursor:pointer}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;
+    background:#fff;transition:transform .2s}
+  .sw.on{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .sw.on::after{transform:translateX(22px)}
+
+  /* segmented */
+  .seg{display:flex;background:var(--sunk);border-radius:var(--r-seg);padding:4px;gap:4px}
+  .seg button{flex:1;border:0;background:transparent;color:var(--sub);padding:8px 6px;border-radius:var(--r-segb);
+    font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+  .seg button.on{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+
+  .btn{display:block;width:100%;border:0;border-radius:var(--r-btn);padding:15px;font-size:16px;font-weight:700;
+    color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);font-family:inherit}
+  .btn.ghost{background:var(--ghost-bg);color:var(--ghost-ink);box-shadow:none}
+  .btn.danger{background:linear-gradient(90deg,var(--danger1),var(--danger2))}
+  .btn:active{transform:translateY(1px)}
+
+  /* calculator */
+  .pills{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{background:var(--sunk);border:1px solid var(--card-border);border-radius:var(--r-pill);padding:12px 14px;flex:1;min-width:88px;text-align:center}
+  .pill .t{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .pill .c{font-size:11px;color:var(--sub);margin-top:3px}
+  .pill.best{border-color:var(--good);box-shadow:0 0 0 1px var(--good) inset}
+  .pill.best .c{color:var(--good)}
+
+  /* regularity score */
+  .score{text-align:center;margin-bottom:4px}
+  .score .num{font-size:48px;font-weight:800;font-variant-numeric:tabular-nums;
+    background:linear-gradient(180deg,var(--score1),var(--score2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .score .lab{font-size:12px}
+
+  /* mood */
+  .moods{display:flex;justify-content:space-between;gap:8px}
+  .mood{flex:1;background:var(--sunk);border:1px solid var(--card-border);border-radius:var(--r-mood);padding:10px 4px;text-align:center;cursor:pointer;font-size:24px}
+  .mood.on{border-color:var(--sel-border);background:var(--sel-bg);transform:translateY(-2px)}
+  .mood .ml{display:block;font-size:10px;color:var(--sub);margin-top:2px}
+
+  /* log */
+  .logitem{display:flex;align-items:center;gap:12px;padding:12px 2px;border-top:1px solid var(--line);font-size:14px}
+  .logitem:first-child{border-top:0}
+  .logitem .d{color:var(--sub);font-size:12px;width:56px;flex:0 0 auto}
+  .logitem .bar{flex:1;height:8px;border-radius:6px;background:var(--sunk);overflow:hidden;position:relative}
+  .logitem .bar span{position:absolute;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .logitem .dur{width:52px;text-align:right;font-variant-numeric:tabular-nums;font-size:12px}
+  .logitem .em{font-size:18px;width:24px;text-align:center}
+  .empty{color:var(--sub);font-size:13px;text-align:center;padding:18px}
+
+  .field{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  .field label{font-size:13px;color:var(--sub);width:70px;flex:0 0 auto}
+  .field input{flex:1;background:var(--sunk);border:1px solid var(--card-border);color:var(--ink);border-radius:var(--r-input);
+    padding:11px;font-size:16px;font-family:inherit}
+
+  /* theme picker */
+  .themes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .theme{display:flex;align-items:center;gap:10px;background:var(--sunk);border:1px solid var(--card-border);
+    border-radius:var(--r-pill);padding:11px 12px;cursor:pointer;font-size:13px;font-weight:600}
+  .theme.on{border-color:var(--sel-border);box-shadow:0 0 0 1px var(--sel-border) inset}
+  .theme .sw-dot{width:22px;height:22px;border-radius:50%;flex:0 0 auto}
+
+  /* tabbar */
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:20;
+    background:var(--nav-bg);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom)}
+  nav .inner{max-width:520px;margin:0 auto;display:flex}
+  nav button{flex:1;background:0;border:0;color:var(--sub);padding:10px 0 8px;font-size:10px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit}
+  nav button .ic{font-size:20px;line-height:1}
+  nav button.on{color:var(--accent)}
+
+  .tab{display:none;animation:fade .25s}
+  .tab.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+  .note{font-size:11px;color:var(--sub);line-height:1.6;background:var(--sunk);border:1px solid var(--card-border);
+    border-radius:var(--r-note);padding:12px;margin-top:4px}
+
+  /* ---- fullscreen wake overlay ---- */
+  #wake{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;justify-content:space-between;
+    align-items:center;padding:12vh 24px calc(40px + env(safe-area-inset-bottom));text-align:center;
+    color:var(--wake-ink);background:var(--wake-bg);overflow:hidden}
+  #wake.show{display:flex}
+  #wakeSun{position:absolute;left:50%;top:78%;transform:translate(-50%,-50%);width:0;height:0;border-radius:50%;
+    background:radial-gradient(circle, #fff6d8 0%, var(--sun1) 35%, var(--sun2) 70%, rgba(255,158,109,0) 72%);
+    filter:blur(2px)}
+  #wake .wtime{position:relative;font-size:72px;font-weight:800;font-variant-numeric:tabular-nums;font-family:var(--font-display);
+    text-shadow:0 2px 20px rgba(255,255,255,.4)}
+  #wake .wmsg{position:relative;font-size:18px;font-weight:700;margin-top:6px}
+  #wake .wbtns{position:relative;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+  #wake .wbtn{border:0;border-radius:18px;padding:18px;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit}
+  #wake .stop{background:var(--wake-ink);color:#fff6d8}
+  #wake .snooze{background:rgba(255,255,255,.35);color:var(--wake-ink)}
+
+  .toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:var(--sunk);color:var(--ink);
+    padding:11px 18px;border-radius:var(--r-note);font-size:13px;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none;
+    border:1px solid var(--card-border);max-width:90%}
+  .toast.show{opacity:1}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="logo" id="logo">🌙</div>
+    <div>
+      <h1>朝スッキリ</h1>
+      <div class="sub">浅い眠りで、やさしく起きる</div>
+    </div>
+  </header>
+
+  <!-- ============ ALARM TAB ============ -->
+  <section class="tab on" id="tab-alarm">
+    <div class="card">
+      <h2>起きたい時刻</h2>
+      <div class="center">
+        <input type="time" id="alarmTime" class="clock-edit" value="07:00">
+      </div>
+      <div class="countdown" id="countdown"></div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <div class="lab">スマートアラーム</div>
+          <div class="desc">起床時刻の手前の「窓」で、眠りが浅くなった瞬間を狙って起こします</div>
+        </div>
+        <div class="sw on" id="swSmart"></div>
+      </div>
+      <div class="row" id="windowRow">
+        <div>
+          <div class="lab">起こす窓</div>
+          <div class="desc">この時間だけ早く起こすことがあります</div>
+        </div>
+        <div class="seg" id="segWindow" style="width:180px">
+          <button data-w="15">15分</button>
+          <button data-w="30" class="on">30分</button>
+          <button data-w="45">45分</button>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="lab">やさしく起こす</div>
+          <div class="desc">画面が朝日のように明るくなり、音量が少しずつ上がります</div>
+        </div>
+        <div class="sw on" id="swGentle"></div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="lab">バイブ</div>
+          <div class="desc">対応端末でやさしく振動します</div>
+        </div>
+        <div class="sw on" id="swVibe"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>アラーム音</h2>
+      <div class="seg" id="segSound">
+        <button data-s="chime" class="on">チャイム</button>
+        <button data-s="birds">小鳥</button>
+        <button data-s="waves">波</button>
+      </div>
+      <button class="btn ghost" id="previewBtn" style="margin-top:12px">▶ 試聴（10秒）</button>
+    </div>
+
+    <button class="btn" id="armBtn">アラームをセット</button>
+    <div class="note" id="armNote" style="display:none"></div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>見た目のテーマ</h2>
+      <div class="themes" id="themePicker">
+        <div class="theme" data-theme-id="nightsky"><span class="sw-dot" style="background:linear-gradient(135deg,#7c8bff,#a78bfa)"></span>夜空</div>
+        <div class="theme" data-theme-id="wood"><span class="sw-dot" style="background:linear-gradient(135deg,#c9963f,#8a5a1f)"></span>木工房</div>
+        <div class="theme" data-theme-id="minimal"><span class="sw-dot" style="background:linear-gradient(135deg,#e8927a,#ffb4a2)"></span>ミニマル</div>
+        <div class="theme" data-theme-id="editorial"><span class="sw-dot" style="background:linear-gradient(135deg,#c9a558,#8f7a3f)"></span>上質</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CALC TAB ============ -->
+  <section class="tab" id="tab-calc">
+    <div class="card">
+      <h2>何時に起きたい？</h2>
+      <div class="seg" style="margin-bottom:14px">
+        <button class="on" id="mNow" onclick="calcMode('now')">今から寝る</button>
+        <button id="mWake" onclick="calcMode('wake')">起きる時刻から</button>
+      </div>
+      <div id="wakeInputWrap" style="display:none;margin-bottom:6px">
+        <div class="center"><input type="time" id="calcWake" class="clock-edit" value="07:00" style="font-size:44px"></div>
+      </div>
+      <p class="desc" id="calcLead" style="margin:0 0 12px;text-align:center;color:var(--sub);font-size:13px"></p>
+      <div class="pills" id="calcPills"></div>
+      <div class="note" style="margin-top:14px">
+        睡眠は約90分周期で深い⇄浅いを繰り返します。周期の変わり目（浅い眠り）で起きると、同じ睡眠時間でもスッキリ感が変わります。入眠まで約14分として計算しています。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOG TAB ============ -->
+  <section class="tab" id="tab-log">
+    <div class="card">
+      <h2>今朝の記録をつける</h2>
+      <div class="field"><label>就寝</label><input type="time" id="logSleep" value="23:30"></div>
+      <div class="field"><label>起床</label><input type="time" id="logWake" value="07:00"></div>
+      <div style="font-size:13px;color:var(--sub);margin:6px 2px 8px">寝起きの気分は？</div>
+      <div class="moods" id="moods">
+        <div class="mood" data-m="1">😴<span class="ml">最悪</span></div>
+        <div class="mood" data-m="2">😪<span class="ml">だるい</span></div>
+        <div class="mood" data-m="3">😐<span class="ml">ふつう</span></div>
+        <div class="mood" data-m="4">🙂<span class="ml">良い</span></div>
+        <div class="mood" data-m="5">😃<span class="ml">最高</span></div>
+      </div>
+      <button class="btn" id="saveLog" style="margin-top:16px">記録する</button>
+    </div>
+
+    <div class="card">
+      <h2>睡眠の規則性スコア</h2>
+      <div class="score">
+        <div class="num" id="regScore">--</div>
+        <div class="lab" id="regLabel" style="color:var(--sub)">記録が3件たまるとスコアが出ます</div>
+      </div>
+      <div class="pills" id="regPills" style="margin-top:10px"></div>
+      <div class="note" style="margin-top:12px">
+        睡眠医学の研究では、睡眠<b>時間</b>よりも「毎日同じ時刻に寝起きする規則性」の方が、健康リスクとの関連が強いことが分かってきています。
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>これまでの記録</h2>
+      <div id="logList"><div class="empty">まだ記録がありません</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== wake overlay ===== -->
+<div id="wake">
+  <div id="wakeSun"></div>
+  <div>
+    <div class="wtime" id="wakeTime">07:00</div>
+    <div class="wmsg" id="wakeMsg">おはよう ☀️</div>
+  </div>
+  <div class="wbtns">
+    <button class="wbtn snooze" id="snoozeBtn">あと5分（スヌーズ）</button>
+    <button class="wbtn stop" id="stopBtn">起きる</button>
+  </div>
+</div>
+
+<nav>
+  <div class="inner">
+    <button class="on" data-tab="alarm"><span class="ic">⏰</span>アラーム</button>
+    <button data-tab="calc"><span class="ic">🔢</span>逆算</button>
+    <button data-tab="log"><span class="ic">📈</span>記録</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- storage ---------------- */
+const KEY='asa-sukkiri-v1';
+const DEF={
+  time:'07:00', smart:true, window:30, gentle:true, vibe:true, sound:'chime',
+  theme:'nightsky', logs:[]
+};
+let S=load();
+function load(){
+  try{
+    const o=Object.assign({},DEF,JSON.parse(localStorage.getItem(KEY)||'{}'));
+    if(o.theme==='dark'||o.theme==='new'||!o.theme) o.theme='nightsky';  // migrate old theme names
+    return o;
+  }catch(e){return {...DEF}}
+}
+function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+
+/* ---------------- helpers ---------------- */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const pad=n=>String(n).padStart(2,'0');
+const fmt=(h,m)=>pad((h%24+24)%24)+':'+pad((m%60+60)%60);
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2200);}
+function hm(str){const[a,b]=str.split(':').map(Number);return a*60+b;}
+
+/* ---------------- theme ---------------- */
+const THEME_EMOJI={nightsky:'🌙',wood:'🕯️',minimal:'☀️',editorial:'🕰️'};
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', S.theme);
+  $('#logo').textContent = THEME_EMOJI[S.theme] || '🌅';
+  requestAnimationFrame(()=>{
+    const tc=getComputedStyle(document.documentElement).getPropertyValue('--tc').trim();
+    if(tc) $('#metaTheme').setAttribute('content', tc);
+  });
+  $$('#themePicker .theme').forEach(el=>el.classList.toggle('on', el.dataset.themeId===S.theme));
+}
+$$('#themePicker .theme').forEach(el=>{
+  el.onclick=()=>{ S.theme=el.dataset.themeId; save(); applyTheme(); };
+});
+applyTheme();
+
+/* ---------------- tabs ---------------- */
+$$('nav button').forEach(b=>b.onclick=()=>{
+  $$('nav button').forEach(x=>x.classList.remove('on'));
+  $$('.tab').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); $('#tab-'+b.dataset.tab).classList.add('on');
+});
+
+/* ---------------- toggles ---------------- */
+function bindSw(id,key,onchange){
+  const el=$(id);
+  const set=()=>el.classList.toggle('on',!!S[key]);
+  set();
+  el.onclick=()=>{S[key]=!S[key];set();save();onchange&&onchange();};
+}
+bindSw('#swSmart','smart',()=>{$('#windowRow').style.opacity=S.smart?'1':'.4';});
+bindSw('#swGentle','gentle');
+bindSw('#swVibe','vibe');
+$('#windowRow').style.opacity=S.smart?'1':'.4';
+
+/* window segment */
+$$('#segWindow button').forEach(b=>{
+  b.classList.toggle('on',+b.dataset.w===S.window);
+  b.onclick=()=>{S.window=+b.dataset.w;save();$$('#segWindow button').forEach(x=>x.classList.toggle('on',x===b));};
+});
+/* sound segment */
+$$('#segSound button').forEach(b=>{
+  b.classList.toggle('on',b.dataset.s===S.sound);
+  b.onclick=()=>{S.sound=b.dataset.s;save();$$('#segSound button').forEach(x=>x.classList.toggle('on',x===b));};
+});
+
+/* alarm time */
+const timeEl=$('#alarmTime');
+timeEl.value=S.time;
+timeEl.onchange=()=>{S.time=timeEl.value;save();updateCountdown();};
+
+/* ---------------- countdown ---------------- */
+function nextAlarmDate(timeStr){
+  const [h,m]=timeStr.split(':').map(Number);
+  const now=new Date(); const d=new Date();
+  d.setHours(h,m,0,0);
+  if(d<=now) d.setDate(d.getDate()+1);
+  return d;
+}
+function updateCountdown(){
+  const d=nextAlarmDate(S.time);
+  let diff=Math.max(0,d-Date.now());
+  const hh=Math.floor(diff/3600000), mm=Math.floor(diff%3600000/60000);
+  let s=`あと ${hh}時間${mm}分 で起床`;
+  if(S.smart) s+=` ・ ${fmtHM(d.getTime()-S.window*60000)}〜 の間に起こします`;
+  $('#countdown').textContent = armed? s : '「アラームをセット」を押すと有効になります';
+}
+function fmtHM(ts){const d=new Date(ts);return fmt(d.getHours(),d.getMinutes());}
+setInterval(()=>{if(armed)updateCountdown();},15000);
+
+/* ================= AUDIO (gentle ramp) ================= */
+let actx, gain, oscNodes=[], audioTimer, wakeStart, currentVol=0;
+function ensureCtx(){ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended')actx.resume(); return actx;}
+function stopAudio(){ oscNodes.forEach(n=>{try{n.stop()}catch(e){}}); oscNodes=[]; clearInterval(audioTimer); if(gain)try{gain.disconnect()}catch(e){} }
+function startTone(kind,ramp){
+  ensureCtx(); stopAudio();
+  gain=actx.createGain(); gain.gain.value=0.0001; gain.connect(actx.destination);
+  const now=actx.currentTime;
+  const notes = kind==='birds'? [1568,2093,2637] : kind==='waves'? [180,240] : [523.25,659.25,783.99];
+  if(kind==='waves'){
+    notes.forEach((f,i)=>{const o=actx.createOscillator();o.type='sine';o.frequency.value=f;
+      const lfo=actx.createOscillator();lfo.frequency.value=0.12+i*0.03;const lg=actx.createGain();lg.gain.value=0.35;
+      lfo.connect(lg);const og=actx.createGain();og.gain.value=0.5;lg.connect(og.gain);o.connect(og);og.connect(gain);
+      o.start();lfo.start();oscNodes.push(o,lfo);});
+  } else {
+    const master=actx.createGain();master.gain.value=1;master.connect(gain);
+    let step=0;
+    const play=()=>{
+      const f=notes[step%notes.length];step++;
+      const o=actx.createOscillator();o.type=kind==='birds'?'triangle':'sine';o.frequency.value=f;
+      const g=actx.createGain();g.gain.value=0;o.connect(g);g.connect(master);
+      const t=actx.currentTime;
+      g.gain.linearRampToValueAtTime(0.9,t+0.03);
+      g.gain.exponentialRampToValueAtTime(0.001,t+ (kind==='birds'?0.5:1.4));
+      o.start(t);o.stop(t+1.6);
+    };
+    play(); audioTimer=setInterval(play, kind==='birds'?650:1300);
+  }
+  const dur = ramp? 75 : 10;
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(ramp?0.9:0.5, now+dur);
+}
+
+/* ================= PREVIEW ================= */
+let previewing=false;
+$('#previewBtn').onclick=()=>{
+  if(previewing){stopAudio();previewing=false;$('#previewBtn').textContent='▶ 試聴（10秒）';return;}
+  startTone(S.sound,false);previewing=true;$('#previewBtn').textContent='■ 停止';
+  setTimeout(()=>{if(previewing){stopAudio();previewing=false;$('#previewBtn').textContent='▶ 試聴（10秒）';}},10000);
+};
+
+/* ================= ARM / SCHEDULER ================= */
+let armed=false, tickTimer=null, wakeLock=null, motion={on:false,samples:[],last:0,baseline:0};
+const armBtn=$('#armBtn'), armNote=$('#armNote');
+
+async function requestWakeLock(){
+  try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release',()=>{}); } }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&armed&&!wakeLock)requestWakeLock(); });
+
+async function arm(){
+  ensureCtx();
+  if(S.smart && typeof DeviceMotionEvent!=='undefined' && typeof DeviceMotionEvent.requestPermission==='function'){
+    try{ const p=await DeviceMotionEvent.requestPermission(); motion.granted=(p==='granted'); }catch(e){ motion.granted=false; }
+  } else { motion.granted = ('DeviceMotionEvent' in window); }
+  armed=true; armBtn.textContent='アラーム解除'; armBtn.classList.add('danger');
+  await requestWakeLock();
+  startScheduler();
+  updateCountdown();
+  armNote.style.display='block';
+  armNote.innerHTML='✅ セット完了。<b>この画面を開いたまま・充電しながら</b>お休みください。スマートアラームは端末を枕元（マットレス上）に置くと寝返りを検知します。'
+    + (S.smart&&!motion.granted?'<br>⚠️ この端末では動きの検知が使えないため、窓の終わりに起こします。':'');
+  toast('アラームをセットしました');
+}
+function disarm(){
+  armed=false; armBtn.textContent='アラームをセット'; armBtn.classList.remove('danger');
+  clearInterval(tickTimer); stopMotion();
+  if(wakeLock){try{wakeLock.release()}catch(e){} wakeLock=null;}
+  armNote.style.display='none'; updateCountdown();
+}
+armBtn.onclick=()=>{ armed?disarm():arm(); };
+
+function startScheduler(){
+  clearInterval(tickTimer);
+  const target=nextAlarmDate(S.time).getTime();
+  const winStart= target - (S.smart? S.window*60000 : 0);
+  let motionStarted=false;
+  tickTimer=setInterval(()=>{
+    const now=Date.now();
+    if(S.smart && !motionStarted && now>=winStart){ motionStarted=true; startMotion(); }
+    if(S.smart && motionStarted && motion.trigger && now>=winStart+60000){
+      fireAlarm(); return;
+    }
+    if(now>=target){ fireAlarm(); }
+  },1000);
+}
+
+/* ---- motion detection ---- */
+function startMotion(){
+  if(!S.smart) return;
+  motion.on=true; motion.trigger=false; motion.recent=[];
+  window.addEventListener('devicemotion', onMotion);
+}
+function stopMotion(){ motion.on=false; window.removeEventListener('devicemotion', onMotion); }
+function onMotion(e){
+  const a=e.accelerationIncludingGravity||e.acceleration; if(!a)return;
+  const mag=Math.sqrt((a.x||0)**2+(a.y||0)**2+(a.z||0)**2);
+  const t=Date.now();
+  if(!motion._prev){motion._prev=mag;return;}
+  const delta=Math.abs(mag-motion._prev); motion._prev=mag;
+  if(delta>1.2){
+    motion.recent.push(t);
+    motion.recent=motion.recent.filter(x=>t-x<20000);
+    if(motion.recent.length>=4){ motion.trigger=true; stopMotion(); }
+  }
+}
+
+/* ================= FIRE ================= */
+let firing=false, sunT=0, sunTimer=null;
+function fireAlarm(){
+  if(firing)return; firing=true;
+  clearInterval(tickTimer); stopMotion();
+  const now=new Date();
+  $('#wakeTime').textContent=fmt(now.getHours(),now.getMinutes());
+  $('#wakeMsg').textContent = pickMsg();
+  $('#wake').classList.add('show');
+  const sun=$('#wakeSun'); sunT=0;
+  const dur = S.gentle? 70000 : 2000;
+  const t0=Date.now();
+  sunTimer=setInterval(()=>{
+    const p=Math.min(1,(Date.now()-t0)/dur);
+    const size=40+p*900;
+    sun.style.width=size+'px'; sun.style.height=size+'px';
+    sun.style.top=(80-p*30)+'%';
+    document.body.style.background = `linear-gradient(180deg, hsl(${230-p*200} ${40}% ${8+p*70}%), hsl(${35} ${90}% ${55+p*10}%))`;
+    if(p>=1)clearInterval(sunTimer);
+  },50);
+  startTone(S.sound, S.gentle);
+  if(S.vibe && navigator.vibrate){ vibeLoop(); }
+}
+let vibeTimer;
+function vibeLoop(){
+  let strength= S.gentle? 120:400;
+  const step=()=>{ if(!firing){navigator.vibrate(0);return;} navigator.vibrate(strength); strength=Math.min(600,strength+40); };
+  step(); vibeTimer=setInterval(step,3000);
+}
+function pickMsg(){
+  const m=['おはよう ☀️','ゆっくり深呼吸してね','いい一日になりますように','まぶしい朝だね','今日もおつかれさま、これから！'];
+  return m[Math.floor(Math.random()*m.length)];
+}
+function dismiss(){
+  firing=false; clearInterval(sunTimer); clearInterval(vibeTimer); if(navigator.vibrate)navigator.vibrate(0);
+  stopAudio(); $('#wake').classList.remove('show');
+  document.body.style.background='';
+  disarm();
+}
+$('#stopBtn').onclick=()=>{ dismiss(); toast('おはようございます 🌸 記録もつけてみて'); };
+$('#snoozeBtn').onclick=()=>{
+  firing=false; clearInterval(sunTimer); clearInterval(vibeTimer); if(navigator.vibrate)navigator.vibrate(0);
+  stopAudio(); $('#wake').classList.remove('show'); document.body.style.background='';
+  const t=Date.now()+5*60000;
+  clearInterval(tickTimer);
+  tickTimer=setInterval(()=>{ if(Date.now()>=t){clearInterval(tickTimer);fireAlarm();} },1000);
+  toast('5分後にまた起こします');
+};
+
+/* ================= CALCULATOR ================= */
+let calcCur='now';
+const FALL=14, CYCLE=90;
+function calcMode(m){
+  calcCur=m;
+  $('#mNow').classList.toggle('on',m==='now'); $('#mWake').classList.toggle('on',m==='wake');
+  $('#wakeInputWrap').style.display=m==='wake'?'block':'none';
+  renderCalc();
+}
+$('#calcWake').onchange=renderCalc;
+function renderCalc(){
+  const wrap=$('#calcPills'); wrap.innerHTML='';
+  if(calcCur==='now'){
+    $('#calcLead').textContent='今すぐ寝ると、この時刻に起きるとスッキリ';
+    const base=Date.now()+FALL*60000;
+    [6,5,4,3].forEach(c=>{
+      const t=new Date(base+c*CYCLE*60000);
+      const div=document.createElement('div');
+      div.className='pill'+(c===5||c===6?' best':'');
+      div.innerHTML=`<div class="t">${fmt(t.getHours(),t.getMinutes())}</div><div class="c">${c}周期・${(c*1.5).toFixed(1)}h</div>`;
+      wrap.appendChild(div);
+    });
+  } else {
+    $('#calcLead').textContent='この時刻に起きるなら、就寝はこのあたりが◎';
+    const wake=hm($('#calcWake').value);
+    [6,5,4].forEach(c=>{
+      let mins=wake - FALL - c*CYCLE;
+      const div=document.createElement('div');
+      div.className='pill'+(c===5||c===6?' best':'');
+      div.innerHTML=`<div class="t">${fmt(Math.floor(mins/60),((mins%60)+60)%60)}</div><div class="c">${c}周期・${(c*1.5).toFixed(1)}h睡眠</div>`;
+      wrap.appendChild(div);
+    });
+  }
+}
+renderCalc();
+
+/* ================= LOG ================= */
+let curMood=4;
+$$('#moods .mood').forEach(el=>el.onclick=()=>{
+  curMood=+el.dataset.m; $$('#moods .mood').forEach(x=>x.classList.toggle('on',x===el));
+});
+$$('#moods .mood')[3].classList.add('on');
+$('#saveLog').onclick=()=>{
+  const sl=hm($('#logSleep').value), wk=hm($('#logWake').value);
+  let dur=wk-sl; if(dur<=0)dur+=1440;
+  const now=new Date();
+  S.logs.unshift({date:`${now.getMonth()+1}/${now.getDate()}`, sleep:$('#logSleep').value, wake:$('#logWake').value, dur, mood:curMood});
+  S.logs=S.logs.slice(0,30); save(); renderLog(); toast('記録しました 📝');
+};
+const EMO={1:'😴',2:'😪',3:'😐',4:'🙂',5:'😃'};
+function renderLog(){
+  const list=$('#logList');
+  if(!S.logs.length){list.innerHTML='<div class="empty">まだ記録がありません</div>';}
+  else{
+    const maxDur=Math.max(...S.logs.map(l=>l.dur),600);
+    list.innerHTML=S.logs.map(l=>{
+      const h=Math.floor(l.dur/60), m=l.dur%60;
+      return `<div class="logitem">
+        <span class="d">${l.date}</span>
+        <span class="em">${EMO[l.mood]||''}</span>
+        <span class="bar"><span style="width:${Math.min(100,l.dur/maxDur*100)}%"></span></span>
+        <span class="dur">${h}h${pad(m)}</span>
+      </div>`;
+    }).join('');
+  }
+  renderRegularity();
+}
+
+/* ---- 睡眠の規則性スコア（円周統計でばらつきを測る） ---- */
+function circularR(mins){
+  let sx=0, sy=0;
+  mins.forEach(m=>{ const a=m/1440*2*Math.PI; sx+=Math.cos(a); sy+=Math.sin(a); });
+  const n=mins.length; return Math.sqrt(sx*sx+sy*sy)/n;
+}
+function circularSD(R){
+  const r=Math.min(0.9999,Math.max(0.0001,R));
+  const sdRad=Math.sqrt(-2*Math.log(r));
+  return Math.round(sdRad/(2*Math.PI)*1440);
+}
+function renderRegularity(){
+  const scoreEl=$('#regScore'), labEl=$('#regLabel'), pillsEl=$('#regPills');
+  const N=Math.min(14,S.logs.length);
+  if(N<3){
+    scoreEl.textContent='--';
+    labEl.textContent=`記録があと${3-N}件たまるとスコアが出ます`;
+    labEl.style.color='var(--sub)';
+    pillsEl.innerHTML='';
+    return;
+  }
+  const recent=S.logs.slice(0,N);
+  const sdS=circularSD(circularR(recent.map(l=>hm(l.sleep))));
+  const sdW=circularSD(circularR(recent.map(l=>hm(l.wake))));
+  const score=Math.max(0,Math.min(100,Math.round(100-((sdS+sdW)/2)*(100/90))));
+  let msg,color;
+  if(score>=80){ msg='とても規則正しい睡眠です👏'; color='var(--good)'; }
+  else if(score>=60){ msg='まずまず規則的です'; color='var(--good)'; }
+  else if(score>=40){ msg='ややばらつきがあります'; color='var(--warn)'; }
+  else { msg='就寝・起床時刻がかなりバラついています'; color='var(--bad)'; }
+  scoreEl.textContent=score;
+  labEl.textContent=`${msg}（直近${N}件）`;
+  labEl.style.color=color;
+  pillsEl.innerHTML=[[`±${sdS}分`,'就寝時刻のばらつき'],[`±${sdW}分`,'起床時刻のばらつき']]
+    .map(([t,c])=>`<div class="pill"><div class="t">${t}</div><div class="c">${c}</div></div>`).join('');
+}
+renderLog();
+
+/* init */
+updateCountdown();
+
+/* service worker */
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+</script>
