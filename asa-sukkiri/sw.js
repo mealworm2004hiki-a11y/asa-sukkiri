@@ -1,4 +1,4 @@
-const CACHE='asa-sukkiri-v3';
+const CACHE='asa-sukkiri-v6';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-maskable.svg'];
 self.addEventListener('install',e=>{
   self.skipWaiting();
