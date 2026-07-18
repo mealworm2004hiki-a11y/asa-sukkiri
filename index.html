@@ -481,18 +481,31 @@ function fmtHM(ts){const d=new Date(ts);return fmt(d.getHours(),d.getMinutes());
 setInterval(()=>{if(armed)updateCountdown();},15000);
 
 /* ================= AUDIO (gentle ramp) ================= */
-let actx, gain, oscNodes=[], audioTimer, wakeStart, currentVol=0;
+/* gain を大きく上げ、ソフトクリップ（波形飽和）を通すことで、
+   音量上限を大幅に引き上げる。最終段では「うるさいくらい」に鳴る。
+   opt = {dur:ランプ秒数, peak:到達ゲイン(1.0超で飽和して大音量＆耳につく音色)} */
+let actx, gain, shaper, oscNodes=[], audioTimer, wakeStart, currentVol=0;
 function ensureCtx(){ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended')actx.resume(); return actx;}
-function stopAudio(){ oscNodes.forEach(n=>{try{n.stop()}catch(e){}}); oscNodes=[]; clearInterval(audioTimer); if(gain)try{gain.disconnect()}catch(e){} }
-function startTone(kind,ramp){
+function stopAudio(){ oscNodes.forEach(n=>{try{n.stop()}catch(e){}}); oscNodes=[]; clearInterval(audioTimer);
+  if(gain)try{gain.disconnect()}catch(e){} if(shaper)try{shaper.disconnect()}catch(e){} }
+function softCurve(drive){
+  const n=2048, c=new Float32Array(n);
+  for(let i=0;i<n;i++){ const x=i/(n-1)*2-1; c[i]=Math.tanh(x*drive); }
+  return c;
+}
+function startTone(kind,opt){
+  opt=opt||{}; const dur=opt.dur||10, peak=opt.peak||0.7;
   ensureCtx(); stopAudio();
-  gain=actx.createGain(); gain.gain.value=0.0001; gain.connect(actx.destination);
+  // ソフトクリップ用ウェーブシェイパー（音量を稼ぎつつ耳につく倍音を付加）
+  shaper=actx.createWaveShaper(); shaper.curve=softCurve(1.4); shaper.oversample='4x';
+  shaper.connect(actx.destination);
+  gain=actx.createGain(); gain.gain.value=0.0001; gain.connect(shaper);
   const now=actx.currentTime;
   const notes = kind==='birds'? [1568,2093,2637] : kind==='waves'? [180,240] : [523.25,659.25,783.99];
   if(kind==='waves'){
     notes.forEach((f,i)=>{const o=actx.createOscillator();o.type='sine';o.frequency.value=f;
-      const lfo=actx.createOscillator();lfo.frequency.value=0.12+i*0.03;const lg=actx.createGain();lg.gain.value=0.35;
-      lfo.connect(lg);const og=actx.createGain();og.gain.value=0.5;lg.connect(og.gain);o.connect(og);og.connect(gain);
+      const lfo=actx.createOscillator();lfo.frequency.value=0.12+i*0.03;const lg=actx.createGain();lg.gain.value=0.4;
+      lfo.connect(lg);const og=actx.createGain();og.gain.value=0.8;lg.connect(og.gain);o.connect(og);og.connect(gain);
       o.start();lfo.start();oscNodes.push(o,lfo);});
   } else {
     const master=actx.createGain();master.gain.value=1;master.connect(gain);
@@ -502,22 +515,22 @@ function startTone(kind,ramp){
       const o=actx.createOscillator();o.type=kind==='birds'?'triangle':'sine';o.frequency.value=f;
       const g=actx.createGain();g.gain.value=0;o.connect(g);g.connect(master);
       const t=actx.currentTime;
-      g.gain.linearRampToValueAtTime(0.9,t+0.03);
+      g.gain.linearRampToValueAtTime(1.0,t+0.03);
       g.gain.exponentialRampToValueAtTime(0.001,t+ (kind==='birds'?0.5:1.4));
       o.start(t);o.stop(t+1.6);
     };
-    play(); audioTimer=setInterval(play, kind==='birds'?650:1300);
+    play(); audioTimer=setInterval(play, kind==='birds'?600:1150);
   }
-  const dur = ramp? 75 : 10;
   gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(ramp?0.9:0.5, now+dur);
+  gain.gain.exponentialRampToValueAtTime(peak, now+dur);
 }
 
 /* ================= PREVIEW ================= */
 let previewing=false;
 $('#previewBtn').onclick=()=>{
   if(previewing){stopAudio();previewing=false;$('#previewBtn').textContent='▶ 試聴（10秒）';return;}
-  startTone(S.sound,false);previewing=true;$('#previewBtn').textContent='■ 停止';
+  // 試聴は「最初やさしく→最後にしっかり大きく」を10秒に凝縮して体感できるように
+  startTone(S.sound,{dur:8,peak:1.9});previewing=true;$('#previewBtn').textContent='■ 停止';
   setTimeout(()=>{if(previewing){stopAudio();previewing=false;$('#previewBtn').textContent='▶ 試聴（10秒）';}},10000);
 };
 
@@ -608,7 +621,9 @@ function fireAlarm(){
     document.body.style.background = `linear-gradient(180deg, hsl(${230-p*200} ${40}% ${8+p*70}%), hsl(${35} ${90}% ${55+p*10}%))`;
     if(p>=1)clearInterval(sunTimer);
   },50);
-  startTone(S.sound, S.gentle);
+  // やさしく起こすON: 約70秒かけて静か→最後は「うるさいくらい」まで上げる。
+  // OFF: 数秒で一気に大音量。どちらも最終到達ゲインは高め(2.6)で耳につく。
+  startTone(S.sound, S.gentle? {dur:68,peak:2.6} : {dur:4,peak:2.6});
   if(S.vibe && navigator.vibrate){ vibeLoop(); }
 }
 let vibeTimer;
